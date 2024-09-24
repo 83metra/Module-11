@@ -36,7 +36,7 @@ def introspection_info(obj):
     if inspect.isfunction(obj) and obj.__doc__ is not None:
         object_info.update({'Комментарий к функции': obj.__doc__})
 
-    if not isinstance(obj, (int, str, list, tuple, set)) and not (inspect.isfunction(obj), inspect.isgenerator(obj)):#, inspect.isclass(obj)):
+    if not isinstance(obj, (int, str, list, tuple, set, float, complex)) and not (inspect.isfunction(obj), inspect.isgenerator(obj)):#, inspect.isclass(obj)):
         object_info.update({'Атрибуты объекта и их значения': obj.__dict__})
     if inspect.isclass(obj):
         #attribute_list = [element for element in dir(obj)]
@@ -50,7 +50,7 @@ def introspection_info(obj):
         else:
             object_info.update({'Методы объекта': [element for element in dir(obj) if '__' not in element]})
 
-    if not isinstance(obj, (int, str, list, tuple, set)) and not inspect.isgenerator(obj):
+    if not isinstance(obj, (int, str, list, tuple, set, float, complex)) and not inspect.isgenerator(obj):
         object_info.update({f'Объект находится в модуле': obj.__module__})
     object_info.update({'Пути к каталогам для поиска модулей': sys.path})
 
@@ -69,9 +69,13 @@ class Info:
 
 
 obj = introspection_info(45)
+# obj = introspection_info(45.23)
+# obj = introspection_info(45+6j)
 # obj = introspection_info('Ratio')
 # obj = introspection_info(Info)
 # obj = introspection_info({1,2,54,3467,2322,'Я множество! Поклоняйтесь мне!', 342})
+# obj = introspection_info([2,54, 2322,'А я список! Поклоняйтесь мне тоже!', 65])
+# obj = introspection_info((2,54, 2322,'А вообще кортеж! Все поклоняйтесь только мне!', 65))
 # obj = introspection_info(print_info)
 # obj = introspection_info((a, a**2) for a in range(100))
 # obj = introspection_info(introspection_info)
