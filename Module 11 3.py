@@ -6,7 +6,7 @@ class Basis:
         self.modification = ['Ту-154', 'Ту-154А']
         self.value_of_planes = [49, 63]
         super().__init__()
-    pass
+
 
 def print_info(func):
     '''
@@ -75,6 +75,24 @@ class Info(Basis):
             self.dict_of_planes.update({self.modification[i]: self.value_of_planes[i]})
         return self.dict_of_planes
 
+
+# obj = introspection_info(45)
+# obj = introspection_info(45.23)
+# obj = introspection_info(45+6j)
+# obj = introspection_info('Ratio')
+# obj = introspection_info(Info)
+planes = Info()
+obj = introspection_info(planes)
+# obj = introspection_info({1,2,54,3467,2322,'Я множество! Поклоняйтесь мне!', 342})
+# obj = introspection_info([2,54, 2322,'А я список! Поклоняйтесь мне тоже!', 65])
+# obj = introspection_info((2,54, 2322,'А вообще кортеж! Все поклоняйтесь только мне!', 65))
+# obj = introspection_info(print_info)
+# obj = introspection_info((a, a**2) for a in range(100))
+# obj = introspection_info(introspection_info)
+#
+# pprint(obj)
+# obj = Info()
+# print(obj.make_dict())
 
 
 
