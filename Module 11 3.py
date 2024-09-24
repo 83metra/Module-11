@@ -46,17 +46,18 @@ def introspection_info(obj):
     if not isinstance(obj, (int, str, list, tuple, set, float, complex)) and not (inspect.isfunction(obj), inspect.isgenerator(obj)):
         object_info.update({'Атрибуты объекта и их значения': obj.__dict__})
     if inspect.isclass(obj):
-        #attribute_list = [element for element in dir(obj)]
         object_info.update({'Атрибуты объекта и методы (Класса)': [element for element in dir(obj)]})
         object_info.update({'Цепочка наследования класса': obj.__mro__})
     else:
-        method_list = [element for element in dir(obj) if '__' not in element]
-        #attribute_list = [element for element in dir(obj) if '__' in element]
-        object_info.update({'Атрибуты объекта': method_list})
-        if not method_list:
-            object_info.update({'Методы объекта': 'Отсутствуют'})
+        if '__main__' in str(type(obj)):
+            object_info.update({'Атрибуты и методы объекта класса:':[element for element in dir(obj)]})
         else:
-            object_info.update({'Методы объекта': [element for element in dir(obj) if '__' not in element]})
+            method_list = [element for element in dir(obj) if '__' not in element]
+            object_info.update({'Атрибуты объекта': method_list})
+            if not method_list:
+                object_info.update({'Методы объекта': 'Отсутствуют'})
+            else:
+                object_info.update({'Методы объекта': [element for element in dir(obj) if '__' not in element]})
 
     if not isinstance(obj, (int, str, list, tuple, set, float, complex)) and not inspect.isgenerator(obj):
         object_info.update({f'Объект находится в модуле': obj.__module__})
@@ -66,9 +67,6 @@ def introspection_info(obj):
 
 class Info(Basis):
     type_of_plane = 'Ту-154'
-    # def __init__(self):
-    #     self.modification = ['Ту-154', 'Ту-154А']
-    #     self.value_of_planes = [49, 63]
     def make_dict(self):
         self.dict_of_planes = {}
         for i in range(len(self.modification)):
