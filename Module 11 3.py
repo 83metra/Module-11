@@ -79,9 +79,10 @@ obj = introspection_info(45)
 # obj = introspection_info(print_info)
 # obj = introspection_info((a, a**2) for a in range(100))
 # obj = introspection_info(introspection_info)
-#
+planes = Info()
+obj = introspection_info(planes)
 # pprint(obj)
-
+# print(obj.make_dict())
 
 
 
