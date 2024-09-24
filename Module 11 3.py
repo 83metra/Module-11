@@ -1,6 +1,13 @@
 import sys, inspect
 from pprint import pprint
 
+class Basis:
+    def __init__(self):
+        self.modification = ['Ту-154', 'Ту-154А']
+        self.value_of_planes = [49, 63]
+        super().__init__()
+    pass
+
 def print_info(func):
     '''
     Тряхнём стариной и вспомним декоратор, так как pprint почему-то не всегда работает корректно.
@@ -36,11 +43,12 @@ def introspection_info(obj):
     if inspect.isfunction(obj) and obj.__doc__ is not None:
         object_info.update({'Комментарий к функции': obj.__doc__})
 
-    if not isinstance(obj, (int, str, list, tuple, set, float, complex)) and not (inspect.isfunction(obj), inspect.isgenerator(obj)):#, inspect.isclass(obj)):
+    if not isinstance(obj, (int, str, list, tuple, set, float, complex)) and not (inspect.isfunction(obj), inspect.isgenerator(obj)):
         object_info.update({'Атрибуты объекта и их значения': obj.__dict__})
     if inspect.isclass(obj):
         #attribute_list = [element for element in dir(obj)]
         object_info.update({'Атрибуты объекта и методы (Класса)': [element for element in dir(obj)]})
+        object_info.update({'Цепочка наследования класса': obj.__mro__})
     else:
         method_list = [element for element in dir(obj) if '__' not in element]
         #attribute_list = [element for element in dir(obj) if '__' in element]
@@ -56,34 +64,16 @@ def introspection_info(obj):
 
     return object_info
 
-class Info:
+class Info(Basis):
     type_of_plane = 'Ту-154'
-    def __init__(self):
-        self.modification = ['Ту-154', 'Ту-154А']
-        self.value_of_planes = [49, 63]
+    # def __init__(self):
+    #     self.modification = ['Ту-154', 'Ту-154А']
+    #     self.value_of_planes = [49, 63]
     def make_dict(self):
         self.dict_of_planes = {}
         for i in range(len(self.modification)):
             self.dict_of_planes.update({self.modification[i]: self.value_of_planes[i]})
         return self.dict_of_planes
-
-
-obj = introspection_info(45)
-# obj = introspection_info(45.23)
-# obj = introspection_info(45+6j)
-# obj = introspection_info('Ratio')
-# obj = introspection_info(Info)
-# obj = introspection_info({1,2,54,3467,2322,'Я множество! Поклоняйтесь мне!', 342})
-# obj = introspection_info([2,54, 2322,'А я список! Поклоняйтесь мне тоже!', 65])
-# obj = introspection_info((2,54, 2322,'А вообще кортеж! Все поклоняйтесь только мне!', 65))
-# obj = introspection_info(print_info)
-# obj = introspection_info((a, a**2) for a in range(100))
-# obj = introspection_info(introspection_info)
-planes = Info()
-obj = introspection_info(planes)
-# pprint(obj)
-# print(obj.make_dict())
-
 
 
 
