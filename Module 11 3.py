@@ -50,7 +50,7 @@ def introspection_info(obj):
     if inspect.isclass(obj):
         object_info.update({'Атрибуты объекта и методы (Класса)': [element for element in dir(obj)]})
         object_info.update({'Цепочка наследования класса': obj.__mro__})
-    elif isinstance(obj, (int, str, list, tuple, set, float, complex)) and inspect.isfunction(obj):
+    elif isinstance(obj, (int, str, list, tuple, set, float, complex)) or inspect.isfunction(obj):
         if '__main__' in str(type(obj)):
             object_info.update({'Атрибуты и методы объекта класса:':[element for element in dir(obj)]})
         else:
