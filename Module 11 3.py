@@ -68,14 +68,6 @@ def introspection_info(obj):
 
     return object_info
 
-class Info(Basis):
-    type_of_plane = 'Ту-154'
-    def make_dict(self):
-        self.dict_of_planes = {}
-        for i in range(len(self.modification)):
-            self.dict_of_planes.update({self.modification[i]: self.value_of_planes[i]})
-        return self.dict_of_planes
-
 
 obj = introspection_info(45)
 # obj = introspection_info(45.23)
