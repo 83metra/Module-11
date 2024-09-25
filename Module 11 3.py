@@ -43,24 +43,25 @@ def introspection_info(obj):
     if inspect.isfunction(obj) and obj.__doc__ is not None:
         object_info.update({'Комментарий к функции': obj.__doc__})
 
-    if not isinstance(obj, (int, str, list, tuple, set, float, complex)) and not (inspect.isfunction(obj), inspect.isgenerator(obj)):
+    if (not isinstance(obj, (int, str, list, tuple, set, float, complex)) and 
+            not (inspect.isfunction(obj), inspect.isgenerator(obj))):
         object_info.update({'Атрибуты объекта и их значения': obj.__dict__})
     elif inspect.isfunction(obj):
         object_info.update({'Атрибуты функции': dir(obj)})
     if inspect.isclass(obj):
         object_info.update({'Атрибуты объекта и методы (Класса)': [element for element in dir(obj)]})
         object_info.update({'Цепочка наследования класса': obj.__mro__})
-    elif isinstance(obj, (int, str, list, tuple, set, float, complex)) or inspect.isfunction(obj):
-        if '__main__' in str(type(obj)):
-            object_info.update({'Атрибуты и методы объекта класса:':[element for element in dir(obj)]})
+
+    elif (isinstance(obj, (int, str, list, tuple, set, float, complex)) or inspect.isfunction(obj) or
+          '__main__' in str(type(obj))):
+        object_info.update({'Атрибуты и методы объекта класса:':[element for element in dir(obj)]})
+    else:
+        method_list = [element for element in dir(obj) if '__' not in element]
+        attribute_list = [element for element in dir(obj) if '__' in element]
+        if not method_list:
+            object_info.update({'Методы объекта': 'Отсутствуют'})
         else:
-            method_list = [element for element in dir(obj) if '__' not in element]
-            attribute_list = [element for element in dir(obj) if '__' in element]
-            object_info.update({'Атрибуты объекта': attribute_list})
-            if not method_list:
-                object_info.update({'Методы объекта': 'Отсутствуют'})
-            else:
-                object_info.update({'Методы объекта': [element for element in dir(obj) if '__' not in element]})
+            object_info.update({'Методы объекта': [element for element in dir(obj) if '__' not in element]})
 
     if not isinstance(obj, (int, str, list, tuple, set, float, complex)) and not inspect.isgenerator(obj):
         object_info.update({f'Объект находится в модуле': obj.__module__})
@@ -82,7 +83,7 @@ class Info(Basis):
 # obj = introspection_info(45+6j)
 # obj = introspection_info('Ratio')
 obj = introspection_info(Info)
-# planes = Info()
+planes = Info()
 # obj = introspection_info(planes)
 # obj = introspection_info({1,2,54,3467,2322,'Я множество! Поклоняйтесь мне!', 342})
 # obj = introspection_info([2,54, 2322,'А я список! Поклоняйтесь мне тоже!', 65])
