@@ -45,15 +45,18 @@ def introspection_info(obj):
 
     if not isinstance(obj, (int, str, list, tuple, set, float, complex)) and not (inspect.isfunction(obj), inspect.isgenerator(obj)):
         object_info.update({'Атрибуты объекта и их значения': obj.__dict__})
+    elif inspect.isfunction(obj):
+        object_info.update({'Атрибуты функции': dir(obj)})
     if inspect.isclass(obj):
         object_info.update({'Атрибуты объекта и методы (Класса)': [element for element in dir(obj)]})
         object_info.update({'Цепочка наследования класса': obj.__mro__})
-    else:
+    elif isinstance(obj, (int, str, list, tuple, set, float, complex)) and inspect.isfunction(obj):
         if '__main__' in str(type(obj)):
             object_info.update({'Атрибуты и методы объекта класса:':[element for element in dir(obj)]})
         else:
             method_list = [element for element in dir(obj) if '__' not in element]
-            object_info.update({'Атрибуты объекта': method_list})
+            attribute_list = [element for element in dir(obj) if '__' in element]
+            object_info.update({'Атрибуты объекта': attribute_list})
             if not method_list:
                 object_info.update({'Методы объекта': 'Отсутствуют'})
             else:
@@ -74,13 +77,13 @@ class Info(Basis):
         return self.dict_of_planes
 
 
-# obj = introspection_info(45)
+obj = introspection_info(45)
 # obj = introspection_info(45.23)
 # obj = introspection_info(45+6j)
 # obj = introspection_info('Ratio')
 # obj = introspection_info(Info)
 planes = Info()
-obj = introspection_info(planes)
+# obj = introspection_info(planes)
 # obj = introspection_info({1,2,54,3467,2322,'Я множество! Поклоняйтесь мне!', 342})
 # obj = introspection_info([2,54, 2322,'А я список! Поклоняйтесь мне тоже!', 65])
 # obj = introspection_info((2,54, 2322,'А вообще кортеж! Все поклоняйтесь только мне!', 65))
@@ -89,5 +92,3 @@ obj = introspection_info(planes)
 # obj = introspection_info(introspection_info)
 #
 # pprint(obj)
-# obj = Info()
-# print(obj.make_dict())
